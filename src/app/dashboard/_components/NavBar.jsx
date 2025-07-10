@@ -49,7 +49,7 @@ export default function NavBar() {
         <div className="flex items-center gap-2">
           <Link href="/dashboard">
             <Image
-              src="/icons/Logo.svg"
+              src="/icons/logo.svg"
               width={160}
               height={40}
               className="block"
@@ -135,7 +135,7 @@ export default function NavBar() {
                 </div>
 
                 <Link
-                  href="#"
+                  href="/auth"
                   className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
                 >
                   <span>Logout</span>

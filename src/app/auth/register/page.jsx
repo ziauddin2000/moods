@@ -4,8 +4,11 @@ import Image from "next/image";
 import SubmitBtn from "../_components/SubmitBtn";
 import Link from "next/link";
 import BackButton from "../_components/BackButton";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  let router = useRouter();
+
   // Form Validation
   const {
     register,
@@ -13,7 +16,9 @@ export default function Register() {
     getValues,
     handleSubmit,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    router.push("/dashboard");
+  };
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-l from-[#0C221B] to-[#5C7E6C] flex items-center justify-center px-2 py-5">
@@ -24,7 +29,7 @@ export default function Register() {
         >
           <div>
             <Image
-              src="/icons/Logo.svg"
+              src="/icons/logo.svg"
               width={160}
               height={40}
               className="block mx-auto"

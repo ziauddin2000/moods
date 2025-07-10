@@ -4,15 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import BackButton from "./_components/BackButton";
 import SubmitBtn from "./_components/SubmitBtn";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  let router = useRouter();
   // Form Validation
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    router.push("/dashboard");
+  };
 
   return (
     <div className="min-h-screen w-full bg-black grid grid-cols-1 md:grid-cols-2 gap-5 relative">
@@ -24,7 +28,7 @@ export default function LoginPage() {
         >
           <div>
             <Image
-              src="/icons/Logo.svg"
+              src="/icons/logo.svg"
               width={160}
               height={40}
               className="block mx-auto mb-4"
