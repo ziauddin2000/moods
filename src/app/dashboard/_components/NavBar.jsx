@@ -94,7 +94,7 @@ export default function NavBar() {
               </div>
             )}
           </div>
-          <Link href="#" className="hover:text-green-200">
+          <Link href="/dashboard/agenda" className="hover:text-green-200">
             agenda
           </Link>
           <Link href="#" className="hover:text-green-200">
@@ -222,7 +222,10 @@ export default function NavBar() {
                 </div>
               )}
             </div>
-            <Link href="#" className="text-white py-2 hover:text-green-200">
+            <Link
+              href="/dashboard/agenda"
+              className="text-white py-2 hover:text-green-200"
+            >
               agenda
             </Link>
             <Link href="#" className="text-white py-2 hover:text-green-200">

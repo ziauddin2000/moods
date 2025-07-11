@@ -1,28 +1,121 @@
 "use client";
 import React, { useState } from "react";
+
+import { Calendar } from "@fullcalendar/core";
+import interactionPlugin from "@fullcalendar/interaction"; // for selectable
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { FiMinus } from "react-icons/fi";
+import { GoPlus } from "react-icons/go";
+import { RxCross1 } from "react-icons/rx";
+
 import AgendaCalendar from "./_components/AgendaCalendar";
 import Profile from "./_components/Profile";
+import Image from "next/image";
+import CalendarIc from "../../../../public/icons/CalendarIc";
+import ClockIc from "../../../../public/icons/ClockIc";
 
 export default function Agenda() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [successModal, setsuccessModal] = useState(false);
+
+  // Add this state for minutes
+  const [minutes, setMinutes] = useState(15);
+
+  // selected time
+  const timeSlots = ["09:30", "10:30", "11:30", "12:30", "13:30", "16:30"];
+  const [selectedTime, setSelectedTime] = useState(timeSlots[0]);
+
+  // Functions to handle increment/decrement
+  const handleIncrement = () => setMinutes((prev) => prev + 15);
+  const handleDecrement = () =>
+    setMinutes((prev) => (prev > 15 ? prev - 15 : prev));
 
   // Open popup on date click
   const handleDateClick = (info) => {
-    console.log("Button Clicked");
-    setSelectedDate(info.dateStr);
-    setIsPopupOpen(true);
+    console.log("Date Clicked: ", info.dateStr); // Log clicked date for debugging
+    setSelectedDate(info.dateStr); // Set selected date
+    setSelectedTime(timeSlots[0]); // <-- set first time as active
+    setIsPopupOpen(true); // Open the popup
   };
 
-  // Close popup
-  const closePopup = () => {
-    setIsPopupOpen(false);
-  };
+  // Get current date info
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth(); // 0-indexed
+
+  // Helper to format YYYY-MM-DD and YYYY-MM-DDTHH:mm:ss
+  function formatDate(y, m, d, h = null, min = null) {
+    if (h !== null && min !== null) {
+      return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(
+        2,
+        "0"
+      )}T${String(h).padStart(2, "0")}:${String(min).padStart(2, "0")}:00`;
+    }
+    return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(
+      2,
+      "0"
+    )}`;
+  }
+
+  // Current month events
+  const dummyEvents = [
+    { title: "All Day Event", start: "2024-07-01" },
+    { title: "Long Event", start: "2024-07-07", end: "2024-07-10" },
+    { title: "Conference", start: "2024-07-09", end: "2024-07-11" },
+    {
+      title: "Meeting",
+      start: "2024-07-10T10:30:00",
+      end: "2024-07-10T12:30:00",
+    },
+    { title: "Birthday Party", start: "2024-07-11T07:00:00" },
+    { title: "Repeating Event", start: "2024-07-08T16:00:00" },
+  ];
+
+  // Next month events
+  const nextMonth = (month + 1) % 12;
+  const nextMonthYear = month === 11 ? year + 1 : year;
+  dummyEvents.push(
+    {
+      title: "All Day Event (Next Month)",
+      start: formatDate(nextMonthYear, nextMonth, 3),
+    },
+    {
+      title: "Long Event (Next Month)",
+      start: formatDate(nextMonthYear, nextMonth, 8),
+      end: formatDate(nextMonthYear, nextMonth, 11),
+    },
+    {
+      title: "Conference (Next Month)",
+      start: formatDate(nextMonthYear, nextMonth, 13),
+      end: formatDate(nextMonthYear, nextMonth, 15),
+    },
+    {
+      title: "Meeting (Next Month)",
+      start: formatDate(nextMonthYear, nextMonth, 16, 10, 30),
+      end: formatDate(nextMonthYear, nextMonth, 16, 12, 0),
+    },
+    {
+      title: "Birthday Party (Next Month)",
+      start: formatDate(nextMonthYear, nextMonth, 21, 7, 0),
+    },
+    {
+      title: "Repeating Event (Next Month)",
+      start: formatDate(nextMonthYear, nextMonth, 23, 16, 0),
+    }
+  );
 
   return (
     <div className="py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12">
@@ -30,9 +123,9 @@ export default function Agenda() {
       <div className="lg:col-span-4 xl:col-span-3">
         <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-bl-xl p-5 xl:p-10">
           {/* Agenda Calendar */}
-          <AgendaCalendar></AgendaCalendar>
+          <AgendaCalendar />
           {/* Profile */}
-          <Profile></Profile>
+          <Profile />
         </div>
       </div>
 
@@ -40,8 +133,14 @@ export default function Agenda() {
       <div className="lg:col-span-8 xl:col-span-9">
         <div className="bg-linear-to-bl from-[#5C7E6C] to-[#0C221B] rounded-xl lg:rounded-none lg:rounded-tr-xl lg:rounded-br-xl p-5 full-calendar-wrapper h-[500px] lg:h-full w-full">
           <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
+            plugins={[
+              dayGridPlugin,
+              timeGridPlugin,
+              listPlugin,
+              interactionPlugin,
+            ]}
             initialView="dayGridMonth"
+            selectable={true}
             headerToolbar={{
               left: "today,prev,next",
               center: "title",
@@ -49,39 +148,266 @@ export default function Agenda() {
             }}
             height="100%"
             width="100%"
-            dateClick={(info) => alert("Clicked: " + info.dateStr)}
+            dateClick={handleDateClick}
+            select={(info) => console.log(info)}
+            events={dummyEvents}
           />
         </div>
       </div>
 
-      {/* Popup Modal */}
+      {/* Event Form Modal */}
       {isPopupOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-xl w-1/3">
-            <h3 className="text-xl font-semibold mb-4">
-              Add Event on {selectedDate}
-            </h3>
-            {/* Add your event form here */}
-            <input
-              type="text"
-              placeholder="Event title"
-              className="w-full p-2 mb-4 border border-gray-300 rounded-md"
-            />
-            <textarea
-              placeholder="Event description"
-              className="w-full p-2 mb-4 border border-gray-300 rounded-md"
-            />
+        <div
+          className={`
+            fixed z-50 bg-[#1d1d1db4] bg-opacity-80 w-full h-full
+            flex justify-center
+            overflow-y-auto
+            inset-x-0 top-0
+            items-start
+            py-4
+            lg:inset-0 lg:items-center lg:py-8
+            min-h-screen
+          `}
+          style={{ minHeight: "100vh" }}
+          onClick={() => setIsPopupOpen(false)}
+        >
+          <div
+            className={`
+              bg-primary-rich-black rounded-2xl max-w-3xl lg:max-w-6xl
+              flex flex-col
+              shadow-2xl border border-[#F6ECE280] relative
+              p-2 sm:p-4 md:p-5
+              gap-0
+              lg:flex-row
+              w-[96%]
+            `}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Left Column */}
+            <div className="flex-1 flex flex-col gap-4 px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 min-w-[180px] border-b lg:border-b-0 lg:border-r border-[#2C3A33]">
+              {/*ZPM Behandeling  */}
+              <div>
+                <label className="text-lg text-primary-beige font-medium mb-2 block">
+                  ZPM Behandeling
+                </label>
+                <div className="relative event-popup">
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="ZPM Behandeling" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Treatment 1">Treatment 1</SelectItem>
+                      <SelectItem value="Treatment 2">Treatment 2</SelectItem>
+                      <SelectItem value="Treatment 3">Treatment 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {/* Time */}
+              <div>
+                <label className="text-lg text-primary-beige font-medium mb-2 block">
+                  Tijdsduur
+                </label>
+                <div className="flex items-center gap-2">
+                  <button
+                    className="h-6 w-6 cursor-pointer rounded-full flex items-center justify-center bg-green2 text-white text-sm"
+                    onClick={handleDecrement}
+                  >
+                    <FiMinus />
+                  </button>
+                  <span className="text-primary-beige text-base">
+                    <span>{minutes}</span> minuten
+                  </span>
+                  <button
+                    className="h-6 w-6 cursor-pointer rounded-full flex items-center justify-center bg-green2 text-white text-sm"
+                    onClick={handleIncrement}
+                  >
+                    <GoPlus />
+                  </button>
+                </div>
+              </div>
+              {/* Therapeut */}
+              <div>
+                <label className="text-lg text-primary-beige font-medium mb-2 block">
+                  Therapeut
+                </label>
+                <div className="relative event-popup">
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Therapeut 1">Therapeut 1</SelectItem>
+                      <SelectItem value="Therapeut 2">Therapeut 2</SelectItem>
+                      <SelectItem value="Therapeut 3">Therapeut 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {/* Cliënt */}
+              <div>
+                <label className="text-lg text-primary-beige font-medium mb-2 block">
+                  Cliënt
+                </label>
+                <div className="relative event-popup">
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Cliënt 1">Cliënt 1</SelectItem>
+                      <SelectItem value="Cliënt 2">Cliënt 2</SelectItem>
+                      <SelectItem value="Cliënt 3">Cliënt 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {/* Locatie */}
+              <div>
+                <label className="text-lg text-primary-beige font-medium mb-2 block">
+                  Locatie
+                </label>
+                <div className="relative event-popup">
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Locatie 1">Locatie 1</SelectItem>
+                      <SelectItem value="Locatie 2">Locatie 2</SelectItem>
+                      <SelectItem value="Locatie 3">Locatie 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+            {/* Middle Column */}
+            <div className="order-3 lg:order-2 flex-1 flex flex-col items-center px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 min-w-[250px] border-b lg:border-b-0 lg:border-r border-[#2C3A33]">
+              <div className="font-medium text-lg text-primary-beige mb-4">
+                Selecteer een datum
+              </div>
+
+              {/* Agenda Calendar */}
+              <AgendaCalendar />
+
+              {/* Book Btn */}
+              <div className="mt-10">
+                <h3 className="text-primary-beige text-center text-lg font-medium">
+                  Eerstvolgende beschikbaarheid
+                </h3>
+                <div className="mt-5 flex items-center border border-secondary-beige rounded-full overflow-hidden w-fit">
+                  <button
+                    onClick={() => {
+                      setIsPopupOpen(false);
+                      setsuccessModal(true);
+                    }}
+                    className="cursor-pointer bg-green5 text-primary-beige px-8 py-3 text-base xl:text-lg font-medium rounded-full  focus:outline-none whitespace-nowrap border-r border-r-secondary-beige"
+                  >
+                    Boek nu
+                  </button>
+                  <span className="text-primary-beige text-base xl:text-lg font-normal bg-transparent px-5 whitespace-nowrap">
+                    Maandag 23 juni
+                  </span>
+                </div>
+              </div>
+            </div>
+            {/* Right Column */}
+            <div className="order-2 lg:order-3 flex-1 flex flex-col items-center px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 min-w-[180px]">
+              <div className="text-primary-beige text-lg text-center mb-6 font-medium">
+                Selecteer een tijd
+              </div>
+              <div className="text-primary-beige text-base font-normal text-center mb-4">
+                Donderdag 14 juli
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-col gap-3 w-full schedule-wrap max-h-[300px] overflow-auto ">
+                {timeSlots.map((t) => (
+                  <button
+                    key={t}
+                    className={`cursor-pointer bg-green1 text-primary-beige rounded-full py-2 font-medium hover:bg-green5 transition
+                      ${selectedTime === t ? "bg-green5" : ""}
+                    `}
+                    onClick={() => setSelectedTime(t)}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+              <button
+                className="mt-8 button-gr"
+                onClick={() => {
+                  setIsPopupOpen(false);
+                  setsuccessModal(true);
+                }}
+              >
+                Bevestig afspraak
+              </button>
+            </div>
+
+            {/* Close Button */}
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-              onClick={closePopup} // Close the popup
+              className="absolute top-3 right-3 sm:top-5 sm:right-5 text-primary-beige text-xl cursor-pointer"
+              onClick={() => setIsPopupOpen(false)}
             >
-              Cancel
+              <RxCross1 />
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {successModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#1d1d1db4] bg-opacity-80"
+          style={{ minHeight: "100vh" }}
+          onClick={() => setsuccessModal(false)}
+        >
+          <div
+            className="relative bg-rich-black rounded-2xl shadow-2xl border border-secondary-beige max-w-lg w-[96%] px-8 py-10 flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded-md"
-              // Later on, you will handle database save here
+              className="absolute top-4 right-4 text-primary-beige text-2xl"
+              onClick={() => setsuccessModal(false)}
             >
-              Save Event
+              <RxCross1 />
+            </button>
+            {/* Green Check */}
+            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-green5 mb-6">
+              <Image
+                src="/icons/green-check.svg"
+                alt="Green Check"
+                width={100}
+                height={100}
+              ></Image>
+            </div>
+            {/* Title */}
+            <div className="text-2xl text-primary-beige font-medium mb-4 text-center">
+              Afspraak ingepland!
+            </div>
+            {/* Date & Time */}
+            <div className="flex items-center justify-center gap-6 mb-4 text-primary-beige">
+              <div className="flex items-center gap-2 text-base">
+                <CalendarIc></CalendarIc>
+                <span>7 Juli, 2025</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ClockIc></ClockIc>
+                <span text-base>10:30 - 11:30 uur</span>
+              </div>
+            </div>
+            {/* Details */}
+            <div className="text-primary-beige text-center text-sm space-y-1 mb-8">
+              <p>Therapeut: Lisa Anna</p>
+              <p>Cliënt: Femke de Groot</p>
+              <p>Locatie: Amsterdam</p>
+            </div>
+            {/* Button */}
+            <button
+              className="cursor-pointer button-gr max-w-[200px] w-full"
+              onClick={() => setsuccessModal(false)}
+            >
+              Terug naar agenda
             </button>
           </div>
         </div>

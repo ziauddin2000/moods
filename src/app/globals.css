@@ -14,6 +14,7 @@
   --color-green2: #3e6852;
   --color-green3: #487a60;
   --color-green4: #6cb791;
+  --color-green5: #37815b;
   --color-rich-black: #060606;
   --color-primary-beige: #f6ece2;
   --color-secondary-beige: #bfb8b1;
@@ -207,21 +208,42 @@ input[type="checkbox"]:checked + span img {
   border-radius: 5px !important;
 }
 
+.full-calendar-wrapper .fc-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.fc .fc-toolbar {
+  @apply flex flex-wrap justify-center gap-[10px] sm:justify-between sm:gap-0;
+}
+
 /* Dropdown select */
-.agenda-dropdown {
+.agenda-dropdown,
+.event-popup {
   @apply text-primary-beige;
 }
-.agenda-dropdown[data-placeholder] {
+.agenda-dropdown[data-placeholder],
+.event-popup[data-placeholder] {
   @apply text-primary-beige;
 }
 
-.agenda-dropdown svg {
+.agenda-dropdown svg,
+.event-popup svg {
   @apply text-primary-beige;
 }
-.agenda-dropdown .focus-visible\:border-ring:focus-visible {
+.agenda-dropdown .focus-visible\:border-ring:focus-visible,
+.event-popup .focus-visible\:border-ring:focus-visible {
   box-shadow: none !important;
 }
 
-.full-calendar-wrapper .fc-scroller::-webkit-scrollbar {
-  display: none;
+/* Schedule Wrap */
+.schedule-wrap::-webkit-scrollbar {
+  width: 5px;
+}
+
+.schedule-wrap::-webkit-scrollbar-track {
+  @apply bg-green1;
+}
+
+.schedule-wrap::-webkit-scrollbar-thumb {
+  @apply bg-green3;
 }
