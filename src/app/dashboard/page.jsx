@@ -46,20 +46,20 @@ export default function Dashboard() {
 
   return (
     // Dashbaord Page
-    <div className="py-10 grid grid-cols-12 gap-5">
+    <div className="py-10 grid grid-cols-1 xl:grid-cols-12 gap-3">
       {/* Left Chart */}
-      <div className="col-span-4">
+      <div className="w-full xl:col-span-4">
         <ResultChart data={data}></ResultChart>
       </div>
       {/* Middle Chart */}
-      <div className="col-span-6">
+      <div className="xl:col-span-6">
         {/* Chart Grid */}
-        <div className="grid grid-cols-12 gap-2 mb-5">
-          <div className="col-span-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-5">
+          <div className="md:col-span-8 h-full">
             {/* Calendar */}
             <HomeCalendar></HomeCalendar>
           </div>
-          <div className="col-span-4">
+          <div className="md:col-span-4">
             {/* Pie Chart */}
             <PieChartPage></PieChartPage>
           </div>
@@ -68,9 +68,9 @@ export default function Dashboard() {
         <ClientFlow></ClientFlow>
       </div>
       {/* Right Chart */}
-      <div className="col-span-2 flex flex-col justify-between">
+      <div className="xl:col-span-2 flex flex-col md:flex-row xl:flex-col gap-5 justify-between">
         {/* session start */}
-        <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5">
+        <div className="md:w-[50%] md:h-fit xl:w-full bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5">
           <div className="flex justify-end">
             <Image
               src="/icons/arrow-top-right.svg"
@@ -84,7 +84,9 @@ export default function Dashboard() {
           </h3>
         </div>
         {/* Bill Chart */}
-        <BillChart></BillChart>
+        <div className="md:w-[50%] xl:w-full xl:h-full">
+          <BillChart></BillChart>
+        </div>
       </div>
     </div>
   );

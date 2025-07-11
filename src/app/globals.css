@@ -162,3 +162,66 @@ input[type="checkbox"]:checked + span img {
     @apply bg-background text-foreground;
   }
 }
+
+/* Calendaer */
+.home-calendar button[data-selected-single="true"] {
+  @apply bg-green3;
+}
+
+.home-calendar td[data-selected="true"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.full-calendar-wrapper
+  .fc-direction-ltr
+  .fc-button-group
+  > .fc-button:not(:first-child) {
+  border-radius: 5px;
+}
+
+.full-calendar-wrapper .fc-media-screen {
+  @apply text-primary-beige;
+}
+.full-calendar-wrapper .fc-button-group button {
+  @apply border-0 bg-transparent outline-0 shadow-none;
+}
+
+.full-calendar-wrapper .fc .fc-button-primary:hover {
+  @apply bg-green3 outline-0 shadow-none border-0;
+}
+
+.full-calendar-wrapper .fc .fc-button-primary:not(:disabled).fc-button-active,
+.full-calendar-wrapper .fc .fc-button-primary:not(:disabled):active {
+  @apply rounded-tl-[15px] rounded-tr-[15px] bg-green1;
+}
+
+.full-calendar-wrapper
+  .fc
+  .fc-button-primary:not(:disabled).fc-button-active:focus,
+.full-calendar-wrapper .fc .fc-button-primary:not(:disabled):active:focus {
+  @apply shadow-none;
+}
+
+.full-calendar-wrapper .fc-today-button {
+  border-radius: 5px !important;
+}
+
+/* Dropdown select */
+.agenda-dropdown {
+  @apply text-primary-beige;
+}
+.agenda-dropdown[data-placeholder] {
+  @apply text-primary-beige;
+}
+
+.agenda-dropdown svg {
+  @apply text-primary-beige;
+}
+.agenda-dropdown .focus-visible\:border-ring:focus-visible {
+  box-shadow: none !important;
+}
+
+.full-calendar-wrapper .fc-scroller::-webkit-scrollbar {
+  display: none;
+}

@@ -18,7 +18,7 @@ import {
 
 export default function ResultChart({ data }) {
   return (
-    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-8">
+    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 sm:p-8 h-full">
       <h1 className="text-primary-beige text-2xl font-medium mb-4">
         Resultaten
       </h1>
@@ -37,14 +37,14 @@ export default function ResultChart({ data }) {
       </div>
 
       {/* Chart */}
-      <div className="mt-6">
-        <ResponsiveContainer width="100%" height={400}>
+      <div className="mt-6 h-[250px] sm:h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
             margin={{
               top: 0,
               right: 0,
-              left: 0,
+              left: -20,
               bottom: 0,
             }}
           >

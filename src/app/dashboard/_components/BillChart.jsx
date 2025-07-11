@@ -41,7 +41,7 @@ export default function BillChart() {
   ];
 
   return (
-    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5">
+    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 h-full">
       <h1 className="text-primary-beige text-center text-2xl font-medium mb-4">
         Declarabiliteit
       </h1>
@@ -53,7 +53,7 @@ export default function BillChart() {
             margin={{
               top: 0,
               right: 0,
-              left: 0,
+              left: -20,
               bottom: 0,
             }}
           >

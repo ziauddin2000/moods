@@ -94,12 +94,12 @@ export default function NavBar() {
               </div>
             )}
           </div>
-          <a href="#" className="hover:text-green-200">
+          <Link href="#" className="hover:text-green-200">
             agenda
-          </a>
-          <a href="#" className="hover:text-green-200">
+          </Link>
+          <Link href="#" className="hover:text-green-200">
             clientenbase
-          </a>
+          </Link>
           <div className="relative">
             <button
               className="hover:text-green-200 flex items-center gap-1 cursor-pointer"
@@ -174,12 +174,12 @@ export default function NavBar() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="absolute top-full left-0 w-full bg-[#191C1F] flex flex-col gap-2 py-4 px-4 lg:hidden animate-fade-in z-40">
-            <a href="#" className="text-white py-2 hover:text-green-200">
+            <Link href="#" className="text-white py-2 hover:text-green-200">
               dashboard
-            </a>
+            </Link>
             <div className="relative">
               <button
-                className="text-white flex items-center gap-1 w-full hover:text-green-200"
+                className="text-white flex items-center gap-1 "
                 onClick={() => setSessiesOpen((v) => !v)}
               >
                 sessies
@@ -198,49 +198,44 @@ export default function NavBar() {
                 </svg>
               </button>
               {sessiesOpen && (
-                <div className="ml-4 mt-1 flex flex-col bg-[#2B3A35] rounded-lg shadow-lg py-2">
-                  <a
-                    href="#"
-                    className="px-4 py-2 hover:bg-[#3C4D46] flex items-center justify-between"
-                  >
-                    nieuwe sessie <span>•</span>
-                  </a>
-                  <a href="#" className="px-4 py-2 hover:bg-[#3C4D46]">
-                    afgelopen sessies
-                  </a>
-                  <a
-                    href="#"
-                    className="px-4 py-2 hover:bg-[#3C4D46] flex items-center justify-between"
-                  >
-                    kamers{" "}
-                    <svg
-                      className="w-4 h-4 ml-1"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle cx="12" cy="12" r="1.5" />
-                      <path d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M6.05 17.95l-1.414 1.414m12.728 0l-1.414-1.414M6.05 6.05L4.636 4.636" />
-                    </svg>
-                  </a>
+                <div className="ml-2 mt-1 flex flex-col rounded-lg shadow-lg py-2 bg-green1">
+                  {sessies.map((sessie, idx) => {
+                    return (
+                      <Link
+                        key={idx}
+                        href="#"
+                        className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
+                      >
+                        <span className="text-primary-beige">
+                          {sessie.label}
+                        </span>
+                        <Image
+                          src={sessie.icons}
+                          width={20}
+                          height={20}
+                          alt={sessie.label}
+                          priority
+                        />
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>
-            <a href="#" className="text-white py-2 hover:text-green-200">
+            <Link href="#" className="text-white py-2 hover:text-green-200">
               agenda
-            </a>
-            <a href="#" className="text-white py-2 hover:text-green-200">
+            </Link>
+            <Link href="#" className="text-white py-2 hover:text-green-200">
               clientenbase
-            </a>
-            <div className="relative mt-2">
+            </Link>
+            <div className="relative">
               <button
-                className="bg-[#2B3A35] px-4 py-2 rounded-lg text-white flex items-center gap-2 w-full hover:bg-[#3C4D46]"
+                className="text-white flex items-center gap-1 "
                 onClick={() => setAccountOpen((v) => !v)}
               >
-                account
+                Account
                 <svg
-                  className="w-4 h-4"
+                  className="w-3 h-3 ml-1"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -254,71 +249,45 @@ export default function NavBar() {
                 </svg>
               </button>
               {accountOpen && (
-                <div className="mt-1 flex flex-col bg-[#2B3A35] rounded-lg shadow-lg py-2">
-                  <a
-                    href="#"
-                    className="px-4 py-2 hover:bg-[#3C4D46] flex items-center gap-2"
+                <div className="ml-2 mt-1 flex flex-col rounded-lg shadow-lg py-2 bg-green1">
+                  {accounts.map((account, idx) => {
+                    return (
+                      <Link
+                        key={idx}
+                        href="#"
+                        className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
+                      >
+                        <span className="text-primary-beige">
+                          {account.label}
+                        </span>
+                        <Image
+                          src={account.icons}
+                          width={20}
+                          height={20}
+                          alt={account.label}
+                          priority
+                        />
+                      </Link>
+                    );
+                  })}
+
+                  <div className="px-4">
+                    <div className="h-[1px] w-full bg-[#FFFFFF80]"></div>
+                  </div>
+
+                  <Link
+                    href="/auth"
+                    className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
                   >
-                    mijn profiel{" "}
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle cx="12" cy="8" r="4" />
-                      <path d="M6 20v-2a4 4 0 014-4h0a4 4 0 014 4v2" />
-                    </svg>
-                  </a>
-                  <a
-                    href="#"
-                    className="px-4 py-2 hover:bg-[#3C4D46] flex items-center gap-2"
-                  >
-                    edit widgets{" "}
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <rect x="4" y="4" width="16" height="16" rx="2" />
-                      <path d="M9 9h6v6H9z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="#"
-                    className="px-4 py-2 hover:bg-[#3C4D46] flex items-center gap-2"
-                  >
-                    taal{" "}
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
-                    </svg>
-                  </a>
-                  <a
-                    href="#"
-                    className="px-4 py-2 hover:bg-[#3C4D46] flex items-center gap-2"
-                  >
-                    log out{" "}
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M17 16l4-4m0 0l-4-4m4 4H7" />
-                      <path d="M3 12a9 9 0 0118 0 9 9 0 01-18 0z" />
-                    </svg>
-                  </a>
+                    <span className="text-primary-beige">Logout</span>
+                    <Image
+                      src="/icons/logout-ic.svg"
+                      width={20}
+                      height={20}
+                      alt="Logout"
+                      priority
+                    />
+                  </Link>
                 </div>
               )}
             </div>
