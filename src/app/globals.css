@@ -165,8 +165,13 @@ input[type="checkbox"]:checked + span img {
 }
 
 /* Calendaer */
+
+.home-calendar td {
+  @apply rounded-full overflow-hidden;
+}
+
 .home-calendar button[data-selected-single="true"] {
-  @apply bg-green3;
+  @apply bg-green3 rounded-full;
 }
 
 .home-calendar td[data-selected="true"] {
@@ -212,8 +217,24 @@ input[type="checkbox"]:checked + span img {
   display: none;
 }
 
-.fc .fc-toolbar {
+.full-calendar-wrapper .fc .fc-toolbar {
   @apply flex flex-wrap justify-center gap-[10px] sm:justify-between sm:gap-0;
+}
+
+.full-calendar-wrapper .fc .fc-list-sticky .fc-list-day > * {
+  @apply bg-green1;
+}
+
+.full-calendar-wrapper .fc .fc-list-event:hover td {
+  @apply bg-green1;
+}
+
+.full-calendar-wrapper .fc-h-event {
+  @apply border-0;
+}
+
+.full-calendar-wrapper .fc-v-event {
+  @apply bg-green1 border-0;
 }
 
 /* Dropdown select */
@@ -246,4 +267,14 @@ input[type="checkbox"]:checked + span img {
 
 .schedule-wrap::-webkit-scrollbar-thumb {
   @apply bg-green3;
+}
+
+/* Card Dot Wrapper */
+.card-dot-wrapper button {
+  @apply h-full  cursor-pointer;
+}
+
+/* rooms card wrapper */
+.rooms-card-wrapper::-webkit-scrollbar {
+  display: none;
 }

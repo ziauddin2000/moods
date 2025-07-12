@@ -8,15 +8,67 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
+import { useState } from "react";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
-export default function ResultChart({ data }) {
+const data = [
+  { name: "jan", price: "510", type: "Week" },
+  { name: "jan", price: "2050", type: "Maand" },
+  { name: "jan", price: "600", type: "Jaar" },
+
+  { name: "feb", price: "1530", type: "Week" },
+  { name: "feb", price: "1650", type: "Maand" },
+  { name: "feb", price: "750", type: "Jaar" },
+
+  { name: "mar", price: "840", type: "Week" },
+  { name: "mar", price: "1250", type: "Maand" },
+  { name: "mar", price: "1200", type: "Jaar" },
+
+  { name: "apr", price: "760", type: "Week" },
+  { name: "apr", price: "1350", type: "Maand" },
+  { name: "apr", price: "800", type: "Jaar" },
+
+  { name: "may", price: "590", type: "Week" },
+  { name: "may", price: "850", type: "Maand" },
+  { name: "may", price: "700", type: "Jaar" },
+
+  { name: "jun", price: "670", type: "Week" },
+  { name: "jun", price: "950", type: "Maand" },
+  { name: "jun", price: "1300", type: "Jaar" },
+
+  { name: "jul", price: "820", type: "Week" },
+  { name: "jul", price: "1150", type: "Maand" },
+  { name: "jul", price: "1600", type: "Jaar" },
+
+  { name: "aug", price: "1240", type: "Week" },
+  { name: "aug", price: "1650", type: "Maand" },
+  { name: "aug", price: "1200", type: "Jaar" },
+
+  { name: "sep", price: "660", type: "Week" },
+  { name: "sep", price: "1550", type: "Maand" },
+  { name: "sep", price: "1900", type: "Jaar" },
+
+  { name: "oct", price: "780", type: "Week" },
+  { name: "oct", price: "2150", type: "Maand" },
+  { name: "oct", price: "1100", type: "Jaar" },
+
+  { name: "nov", price: "920", type: "Week" },
+  { name: "nov", price: "1250", type: "Maand" },
+  { name: "nov", price: "1600", type: "Jaar" },
+
+  { name: "dec", price: "1020", type: "Week" },
+  { name: "dec", price: "1150", type: "Maand" },
+  { name: "dec", price: "800", type: "Jaar" },
+];
+
+const FILTERS = ["Week", "Maand", "Jaar"];
+
+export default function ResultChart() {
+  const [selectedType, setSelectedType] = useState("Jaar");
+
+  // Filter data based on selected type
+  const filteredData = data.filter((item) => item.type === selectedType);
+
   return (
     <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 sm:p-8 h-full">
       <h1 className="text-primary-beige text-2xl font-medium mb-4">
@@ -25,22 +77,24 @@ export default function ResultChart({ data }) {
 
       {/* Filter */}
       <div className="flex items-center justify-end border-b border-secondary-beige">
-        <button className="cursor-pointer text-base px-4 py-1 rounded-tl-2xl rounded-tr-2xl text-white font-medium">
-          Week
-        </button>
-        <button className="cursor-pointer text-base px-4 py-1 rounded-tl-2xl rounded-tr-2xl text-white font-medium">
-          Maand
-        </button>
-        <button className="cursor-pointer text-base px-4 py-1 rounded-tl-2xl rounded-tr-2xl text-white font-medium bg-green3">
-          Jaar
-        </button>
+        {FILTERS.map((type) => (
+          <button
+            key={type}
+            onClick={() => setSelectedType(type)}
+            className={`cursor-pointer text-base px-4 py-1 rounded-tl-2xl rounded-tr-2xl text-white font-medium transition-colors ${
+              selectedType === type ? "bg-green3" : ""
+            }`}
+          >
+            {type}
+          </button>
+        ))}
       </div>
 
       {/* Chart */}
       <div className="mt-6 h-[250px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={data}
+            data={filteredData}
             margin={{
               top: 0,
               right: 0,

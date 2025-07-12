@@ -14,7 +14,7 @@ export default function CalendarIc() {
         height="17.4171"
         rx="1"
         stroke="url(#paint0_linear_404_3159)"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
       <line
         x1="0.428223"
@@ -22,31 +22,31 @@ export default function CalendarIc() {
         x2="18.4282"
         y2="8.88611"
         stroke="url(#paint1_linear_404_3159)"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
       <path
         d="M4.9917 6.0293L5.01929 1.50054"
         stroke="url(#paint2_linear_404_3159)"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
       <path
         d="M9.08301 16.7761L6.86698 14.5682"
         stroke="url(#paint3_linear_404_3159)"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
       <path
         d="M9.08301 16.7761L12.3439 13.046"
         stroke="url(#paint4_linear_404_3159)"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
       <path
         d="M14.2026 6.0293L14.2302 1.50054"
         stroke="url(#paint5_linear_404_3159)"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
       <defs>
         <linearGradient

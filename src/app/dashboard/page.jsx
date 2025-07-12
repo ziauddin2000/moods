@@ -9,47 +9,14 @@ import BillChart from "./_components/BillChart";
 import HomeCalendar from "./_components/HomeCalendar";
 
 export default function Dashboard() {
-  const data = [
-    {
-      name: "jun",
-      price: "600",
-    },
-    {
-      name: "jul",
-      price: "600",
-    },
-    {
-      name: "aug",
-      price: "300",
-    },
-    {
-      name: "sep",
-      price: "500",
-    },
-    {
-      name: "oct",
-      price: "800",
-    },
-    {
-      name: "nov",
-      price: "500",
-    },
-    {
-      name: "dec",
-      price: "300",
-    },
-    {
-      name: "jan",
-      price: "800",
-    },
-  ];
+  
 
   return (
     // Dashbaord Page
     <div className="py-10 grid grid-cols-1 xl:grid-cols-12 gap-3">
       {/* Left Chart */}
       <div className="w-full xl:col-span-4">
-        <ResultChart data={data}></ResultChart>
+        <ResultChart ></ResultChart>
       </div>
       {/* Middle Chart */}
       <div className="xl:col-span-6">

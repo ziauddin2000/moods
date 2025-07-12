@@ -50,7 +50,7 @@ export default function HomeCalendar() {
             onSelect={handleDateSelect}
             className="rounded-lg bg-transparent text-primary-beige w-full "
             classNames={{
-              day: "relative w-full h-full p-0 text-center aspect-[3/2] select-none text-xs ",
+              day: "relative w-full h-full p-0 text-center select-none text-xs rounded-full",
               week: "flex w-full mt-0.5",
               weekdays: "flex w-full",
               weekday:

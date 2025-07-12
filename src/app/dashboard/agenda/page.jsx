@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 import { Calendar } from "@fullcalendar/core";
-import interactionPlugin from "@fullcalendar/interaction"; // for selectable
+import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -45,80 +45,90 @@ export default function Agenda() {
 
   // Open popup on date click
   const handleDateClick = (info) => {
-    console.log("Date Clicked: ", info.dateStr); // Log clicked date for debugging
-    setSelectedDate(info.dateStr); // Set selected date
-    setSelectedTime(timeSlots[0]); // <-- set first time as active
-    setIsPopupOpen(true); // Open the popup
+    console.log("Date Clicked: ", info.dateStr);
+    setSelectedDate(info.dateStr);
+    setSelectedTime(timeSlots[0]);
+    setIsPopupOpen(true);
   };
 
-  // Get current date info
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth(); // 0-indexed
-
-  // Helper to format YYYY-MM-DD and YYYY-MM-DDTHH:mm:ss
-  function formatDate(y, m, d, h = null, min = null) {
-    if (h !== null && min !== null) {
-      return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(
-        2,
-        "0"
-      )}T${String(h).padStart(2, "0")}:${String(min).padStart(2, "0")}:00`;
-    }
-    return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(
-      2,
-      "0"
-    )}`;
-  }
-
-  // Current month events
+  //  events data
   const dummyEvents = [
-    { title: "All Day Event", start: "2024-07-01" },
-    { title: "Long Event", start: "2024-07-07", end: "2024-07-10" },
-    { title: "Conference", start: "2024-07-09", end: "2024-07-11" },
+    {
+      title: "1010 - ZPM Behandeling",
+      start: "2025-07-12T08:30:00",
+      end: "2025-07-12T10:00:00",
+      description: "4e behandelgesprek",
+    },
+    {
+      title: "Conference",
+      start: "2025-07-12",
+      end: "2025-07-12",
+      description: "4e behandelgesprek",
+    },
+    {
+      title: "Long Event",
+      start: "2025-07-13",
+      end: "2025-07-13",
+      description: "4e behandelgesprek",
+    },
     {
       title: "Meeting",
-      start: "2024-07-10T10:30:00",
-      end: "2024-07-10T12:30:00",
+      start: "2025-08-10T12:30:00",
+      end: "2025-08-10T12:30:00",
+      description: "4e behandelgesprek",
     },
-    { title: "Birthday Party", start: "2024-07-11T07:00:00" },
-    { title: "Repeating Event", start: "2024-07-08T16:00:00" },
+    {
+      title: "Birthday Party",
+      start: "2025-07-18T07:00:00",
+      end: "2025-07-7T12:30:00",
+      description: "4e behandelgesprek",
+    },
+    {
+      title: "Repeating Event",
+      start: "2025-08-22T16:00:00",
+      end: "2024-08-22T12:30:00",
+      description: "4e behandelgesprek",
+    },
   ];
 
-  // Next month events
-  const nextMonth = (month + 1) % 12;
-  const nextMonthYear = month === 11 ? year + 1 : year;
-  dummyEvents.push(
-    {
-      title: "All Day Event (Next Month)",
-      start: formatDate(nextMonthYear, nextMonth, 3),
-    },
-    {
-      title: "Long Event (Next Month)",
-      start: formatDate(nextMonthYear, nextMonth, 8),
-      end: formatDate(nextMonthYear, nextMonth, 11),
-    },
-    {
-      title: "Conference (Next Month)",
-      start: formatDate(nextMonthYear, nextMonth, 13),
-      end: formatDate(nextMonthYear, nextMonth, 15),
-    },
-    {
-      title: "Meeting (Next Month)",
-      start: formatDate(nextMonthYear, nextMonth, 16, 10, 30),
-      end: formatDate(nextMonthYear, nextMonth, 16, 12, 0),
-    },
-    {
-      title: "Birthday Party (Next Month)",
-      start: formatDate(nextMonthYear, nextMonth, 21, 7, 0),
-    },
-    {
-      title: "Repeating Event (Next Month)",
-      start: formatDate(nextMonthYear, nextMonth, 23, 16, 0),
-    }
-  );
+  // Custom design event Show on calendar
+  function renderEventContent(eventInfo) {
+    const { event } = eventInfo;
+    const start = event.start;
+    const end = event.end;
+    // Format time
+    const startTime = start
+      ? start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      : "";
+    const endTime = end
+      ? end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      : "";
+    return (
+      <div
+        style={{
+          background: "#37815b",
+          borderRadius: "6px",
+          padding: "6px",
+          color: "#fff",
+          fontSize: "14px",
+          width: "100%",
+        }}
+      >
+        <div className="whitespace-normal" style={{ fontWeight: "bold" }}>
+          {event.title}
+        </div>
+        <div>
+          {startTime} - {endTime}{" "}
+        </div>
+        <div style={{ fontSize: "12px", color: "#d3d3d3" }}>
+          {event.extendedProps.description}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12">
+    <div className="py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
       {/* Left */}
       <div className="lg:col-span-4 xl:col-span-3">
         <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-bl-xl p-5 xl:p-10">
@@ -131,27 +141,30 @@ export default function Agenda() {
 
       {/* Right */}
       <div className="lg:col-span-8 xl:col-span-9">
-        <div className="bg-linear-to-bl from-[#5C7E6C] to-[#0C221B] rounded-xl lg:rounded-none lg:rounded-tr-xl lg:rounded-br-xl p-5 full-calendar-wrapper h-[500px] lg:h-full w-full">
-          <FullCalendar
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              listPlugin,
-              interactionPlugin,
-            ]}
-            initialView="dayGridMonth"
-            selectable={true}
-            headerToolbar={{
-              left: "today,prev,next",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek,listWeek",
-            }}
-            height="100%"
-            width="100%"
-            dateClick={handleDateClick}
-            select={(info) => console.log(info)}
-            events={dummyEvents}
-          />
+        <div className="bg-linear-to-bl from-[#5C7E6C] to-[#0C221B] rounded-xl lg:rounded-none lg:rounded-tr-xl lg:rounded-br-xl p-5 full-calendar-wrapper h-[500px] lg:h-full w-full overflow-x-auto">
+          <div style={{ minWidth: 600, width: "100%", height: "100%" }}>
+            <FullCalendar
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                listPlugin,
+                interactionPlugin,
+              ]}
+              initialView="dayGridMonth"
+              selectable={true}
+              headerToolbar={{
+                left: "today,prev,next",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,listWeek",
+              }}
+              height="100%"
+              width="100%"
+              dateClick={handleDateClick}
+              select={(info) => console.log(info)}
+              events={dummyEvents}
+              eventContent={renderEventContent}
+            />
+          </div>
         </div>
       </div>
 

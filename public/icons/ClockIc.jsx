@@ -12,19 +12,19 @@ export default function ClockIc() {
         cy="11.2832"
         r="10"
         stroke="url(#paint0_linear_404_3158)"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
       <path
         d="M10.377 12.0653L10.377 5.28475"
         stroke="url(#paint1_linear_404_3158)"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
       <path
         d="M10.377 12.0653L15.6835 12.0653"
         stroke="url(#paint2_linear_404_3158)"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
       <defs>
         <linearGradient

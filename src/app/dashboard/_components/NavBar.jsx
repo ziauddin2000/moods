@@ -2,26 +2,46 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import DownArrow from "../../../../public/icons/DownArrow";
 
 export default function NavBar() {
   const [sessiesOpen, setSessiesOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Helper for main menu (partial match)
+  const isActiveMenu = (path) =>
+    pathname === path || pathname.startsWith(path + "/");
+
+  //  for dropdown (exact match)
+  const isActiveDropdown = (path) => pathname === path;
+
+  // Active Menu
+  const isActiveRoute = (path) => {
+    if (path === "/dashboard") {
+      return pathname === "/dashboard";
+    }
+    return pathname.startsWith(path);
+  };
 
   // sessies Menu
   let sessies = [
     {
       label: "nieuwe sessie",
       icons: "/icons/plusIcon.svg",
+      href: "/dashboard/sessies",
     },
     {
       label: "afgelopen sessies",
       icons: "/icons/past-session.svg",
+      href: "/dashboard/sessies/pastsessies",
     },
     {
       label: "kamers",
       icons: "/icons/home-ic.svg",
+      href: "/dashboard/sessies/kamers",
     },
   ];
 
@@ -30,21 +50,24 @@ export default function NavBar() {
     {
       label: "mijn profiel",
       icons: "/icons/profile.svg",
+      href: "#",
     },
     {
       label: "edit widgets",
       icons: "/icons/grid-ic.svg",
+      href: "#",
     },
     {
       label: "taal",
       icons: "/icons/globe-ic.svg",
+      href: "#",
     },
   ];
 
   return (
     <>
       {/* Top Bar */}
-      <nav className="w-full bg-transparent py-2 grid grid-cols-2 lg:grid-cols-[20%_80%] xl:grid-cols-[30%_70%] justify-between gap-5 relative z-20">
+      <nav className="w-full bg-transparent py-2 grid grid-cols-2 lg:grid-cols-[20%_80%] xl:grid-cols-[30%_70%] justify-between gap-5 relative z-20 ">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <Link href="/dashboard">
@@ -59,12 +82,21 @@ export default function NavBar() {
         </div>
         {/* Desktop Nav Links */}
         <div className="hidden lg:flex justify-between items-center gap-8 text-lg text-primary-beige">
-          <Link href="/dashboard" className="hover:text-green4">
+          <Link
+            href="/dashboard"
+            className={`hover:text-green4 transition-colors ${
+              isActiveRoute("/dashboard") && pathname === "/dashboard"
+                ? "text-green4"
+                : ""
+            }`}
+          >
             dashboard
           </Link>
           <div className="relative">
             <button
-              className="hover:text-green-200 flex items-center gap-1 cursor-pointer"
+              className={`hover:text-green4 flex items-center gap-1 cursor-pointer transition-colors ${
+                isActiveMenu("/dashboard/sessies") ? "text-green4" : ""
+              }`}
               onClick={() => setSessiesOpen((v) => !v)}
               onBlur={() => setTimeout(() => setSessiesOpen(false), 150)}
             >
@@ -77,8 +109,12 @@ export default function NavBar() {
                   return (
                     <Link
                       key={idx}
-                      href="#"
-                      className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
+                      href={sessie.href}
+                      className={`px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal transition-colors ${
+                        isActiveDropdown(sessie.href)
+                          ? "text-green4 font-bold"
+                          : ""
+                      }`}
                     >
                       <span>{sessie.label}</span>
                       <Image
@@ -94,15 +130,27 @@ export default function NavBar() {
               </div>
             )}
           </div>
-          <Link href="/dashboard/agenda" className="hover:text-green-200">
+          <Link
+            href="/dashboard/agenda"
+            className={`hover:text-green4 transition-colors ${
+              isActiveRoute("/dashboard/agenda") ? "text-green4" : ""
+            }`}
+          >
             agenda
           </Link>
-          <Link href="#" className="hover:text-green-200">
+          <Link
+            href="#"
+            className={`hover:text-green4 transition-colors ${
+              isActiveRoute("/dashboard/clientenbase") ? "text-green4" : ""
+            }`}
+          >
             clientenbase
           </Link>
           <div className="relative">
             <button
-              className="hover:text-green-200 flex items-center gap-1 cursor-pointer"
+              className={`hover:text-green4 flex items-center gap-1 cursor-pointer transition-colors ${
+                isActiveRoute("/dashboard/account") ? "text-green4" : ""
+              }`}
               onClick={() => setAccountOpen((v) => !v)}
               onBlur={() => setTimeout(() => setAccountOpen(false), 150)}
             >
@@ -115,8 +163,10 @@ export default function NavBar() {
                   return (
                     <Link
                       key={idx}
-                      href="#"
-                      className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
+                      href={account.href}
+                      className={`px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal transition-colors ${
+                        isActiveRoute(account.href) ? "text-green-400" : ""
+                      }`}
                     >
                       <span>{account.label}</span>
                       <Image
@@ -174,12 +224,23 @@ export default function NavBar() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="absolute top-full left-0 w-full bg-[#191C1F] flex flex-col gap-2 py-4 px-4 lg:hidden animate-fade-in z-40">
-            <Link href="#" className="text-white py-2 hover:text-green-200">
+            <Link
+              href="/dashboard"
+              className={`py-2 hover:text-green4 transition-colors ${
+                isActiveRoute("/dashboard") && pathname === "/dashboard"
+                  ? "text-green4"
+                  : "text-primary-beige"
+              }`}
+            >
               dashboard
             </Link>
             <div className="relative">
               <button
-                className="text-white flex items-center gap-1 "
+                className={`flex items-center gap-1 transition-colors ${
+                  isActiveMenu("/dashboard/sessies")
+                    ? "text-green4"
+                    : "text-primary-beige"
+                }`}
                 onClick={() => setSessiesOpen((v) => !v)}
               >
                 sessies
@@ -203,12 +264,14 @@ export default function NavBar() {
                     return (
                       <Link
                         key={idx}
-                        href="#"
-                        className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
+                        href={sessie.href}
+                        className={`px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal transition-colors ${
+                          isActiveDropdown(sessie.href)
+                            ? "text-green4 font-bold"
+                            : "text-primary-beige"
+                        }`}
                       >
-                        <span className="text-primary-beige">
-                          {sessie.label}
-                        </span>
+                        <span>{sessie.label}</span>
                         <Image
                           src={sessie.icons}
                           width={20}
@@ -224,16 +287,31 @@ export default function NavBar() {
             </div>
             <Link
               href="/dashboard/agenda"
-              className="text-white py-2 hover:text-green-200"
+              className={`py-2 hover:green4 transition-colors ${
+                isActiveRoute("/dashboard/agenda")
+                  ? "text-green4"
+                  : "text-white"
+              }`}
             >
               agenda
             </Link>
-            <Link href="#" className="text-white py-2 hover:text-green-200">
+            <Link
+              href="#"
+              className={`py-2 hover:text-green4 transition-colors ${
+                isActiveRoute("/dashboard/clientenbase")
+                  ? "text-green4"
+                  : "text-white"
+              }`}
+            >
               clientenbase
             </Link>
             <div className="relative">
               <button
-                className="text-white flex items-center gap-1 "
+                className={`flex items-center gap-1 transition-colors ${
+                  isActiveRoute("/dashboard/account")
+                    ? "text-green4"
+                    : "text-white"
+                }`}
                 onClick={() => setAccountOpen((v) => !v)}
               >
                 Account
@@ -257,12 +335,14 @@ export default function NavBar() {
                     return (
                       <Link
                         key={idx}
-                        href="#"
-                        className="px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal"
+                        href={account.href}
+                        className={`px-4 py-2 hover:bg-[#3c4d4654] flex items-center justify-between text-lg font-normal transition-colors ${
+                          isActiveRoute(account.href)
+                            ? "text-green4"
+                            : "text-primary-beige"
+                        }`}
                       >
-                        <span className="text-primary-beige">
-                          {account.label}
-                        </span>
+                        <span>{account.label}</span>
                         <Image
                           src={account.icons}
                           width={20}
