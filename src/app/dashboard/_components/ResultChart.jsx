@@ -98,7 +98,7 @@ export default function ResultChart() {
             margin={{
               top: 0,
               right: 0,
-              left: -20,
+              left: -15,
               bottom: 0,
             }}
           >

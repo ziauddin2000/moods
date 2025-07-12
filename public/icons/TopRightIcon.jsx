@@ -11,20 +11,20 @@ export default function TopRightIcon({ className = "" }) {
       <path
         d="M16.9592 1.45361L1.2124 16.2653"
         stroke="url(#paint0_linear_437_3375)"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <path
         d="M16.9622 10.0248V1.40576"
         stroke="url(#paint1_linear_437_3375)"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <path
         d="M7.7561 1.4624H16.9192"
         stroke="url(#paint2_linear_437_3375)"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <defs>
         <linearGradient

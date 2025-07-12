@@ -13,8 +13,8 @@ export default function PieChartPage() {
 
   return (
     <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 h-full">
-      <div className="relative h-full">
-        <div className="h-[300px]">
+      <div className="flex items-center justify-center h-full">
+        <div className="h-[300px] w-full relative">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -24,6 +24,7 @@ export default function PieChartPage() {
                 fill="#8884d8"
                 paddingAngle={2}
                 dataKey="value"
+                stroke="none"
               >
                 {data.map((entry, index) => (
                   <Cell
@@ -34,11 +35,12 @@ export default function PieChartPage() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+
+          <div className="absolute top-1/2 left-1/2 -translate-1/2 text-center text-primary-beige">
+            <h1 className="text-4xl 2xl:text-4xl font-bold leading-[1]">95</h1>
+            <p className="text-lg font-medium leading-[1]">cliënten</p>
+          </div>
         </div>
-        <h1 className="absolute top-1/2 left-1/2 -translate-1/2 text-center text-primary-beige">
-          <span className="text-4xl 2xl:text-5xl font-bold">95</span> <br />{" "}
-          <span className="text-lg font-medium">cliënten</span>
-        </h1>
       </div>
     </div>
   );

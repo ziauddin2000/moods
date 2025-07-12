@@ -53,7 +53,7 @@ export default function BillChart() {
             margin={{
               top: 0,
               right: 0,
-              left: -20,
+              left: 0,
               bottom: 0,
             }}
           >
