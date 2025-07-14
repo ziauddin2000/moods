@@ -14,7 +14,7 @@ export default function AgendaCalendar() {
   };
 
   return (
-    <div className="home-calendar max-w-[500px] w-full mx-auto">
+    <div className="home-calendar max-w-[500px] w-full mx-auto lg:mx-0">
       <Calendar
         mode="single"
         selected={date}

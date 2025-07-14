@@ -24,7 +24,7 @@ export default function layout({ children }) {
     },
   ];
   return (
-    <div className="py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
+    <div className="py-5 lg:py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
       {/* Left */}
       <div className="lg:col-span-4 xl:col-span-3">
         <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-bl-xl p-5 xl:p-10 lg:h-full w-full">

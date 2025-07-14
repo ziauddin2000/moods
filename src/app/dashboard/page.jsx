@@ -7,11 +7,12 @@ import PieChartPage from "./_components/PieChartPaage";
 import Image from "next/image";
 import BillChart from "./_components/BillChart";
 import HomeCalendar from "./_components/HomeCalendar";
+import Link from "next/link";
 
 export default function Dashboard() {
   return (
     // Dashbaord Page
-    <div className="py-10 grid grid-cols-1 xl:grid-cols-12 gap-3">
+    <div className="py-5 lg:py-10 grid grid-cols-1 xl:grid-cols-12 gap-3">
       {/* Left Chart */}
       <div className="w-full xl:col-span-4">
         <ResultChart></ResultChart>
@@ -35,7 +36,10 @@ export default function Dashboard() {
       {/* Right Chart */}
       <div className="xl:col-span-2 flex flex-col md:flex-row xl:flex-col gap-5 justify-between">
         {/* session start */}
-        <div className="md:w-[50%] md:h-fit xl:w-full bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5">
+        <Link
+          href="/dashboard/sessies"
+          className="md:w-[50%] md:h-fit xl:w-full bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5"
+        >
           <div className="flex justify-end">
             <Image
               src="/icons/arrow-top-right.svg"
@@ -47,7 +51,7 @@ export default function Dashboard() {
           <h3 className="mt-10 text-xl font-medium text-primary-beige">
             start sessie
           </h3>
-        </div>
+        </Link>
         {/* Bill Chart */}
         <div className="md:w-[50%] xl:w-full xl:h-full">
           <BillChart></BillChart>

@@ -61,8 +61,8 @@ export default function Agenda() {
     },
     {
       title: "Conference",
-      start: "2025-07-12",
-      end: "2025-07-12",
+      start: "2025-07-15",
+      end: "2025-07-15",
       description: "4e behandelgesprek",
     },
     {
@@ -72,6 +72,24 @@ export default function Agenda() {
       description: "4e behandelgesprek",
     },
     {
+      title: "Long Event",
+      start: "2025-07-14T08:30:00",
+      end: "2025-07-14T09:30:00",
+      description: "Event no - 1",
+    },
+    {
+      title: "Long Event",
+      start: "2025-07-14T12:30:00",
+      end: "2025-07-14T16:30:00",
+      description: "Event no - 2",
+    },
+    {
+      title: "Long Event 2",
+      start: "2025-07-13",
+      end: "2025-07-13",
+      description: "4e behandelgesprek 2",
+    },
+    {
       title: "Meeting",
       start: "2025-08-10T12:30:00",
       end: "2025-08-10T12:30:00",
@@ -79,14 +97,14 @@ export default function Agenda() {
     },
     {
       title: "Birthday Party",
-      start: "2025-07-18T07:00:00",
-      end: "2025-07-7T12:30:00",
+      start: "2025-07-16T07:00:00",
+      end: "2025-07-7T16:30:00",
       description: "4e behandelgesprek",
     },
     {
       title: "Repeating Event",
-      start: "2025-08-22T16:00:00",
-      end: "2024-08-22T12:30:00",
+      start: "2025-07-17T16:00:00",
+      end: "2025-07-17T12:30:00",
       description: "4e behandelgesprek",
     },
   ];
@@ -114,9 +132,7 @@ export default function Agenda() {
           width: "100%",
         }}
       >
-        <div className="whitespace-normal" style={{ fontWeight: "bold" }}>
-          {event.title}
-        </div>
+        <div className="whitespace-normal">{event.title}</div>
         <div>
           {startTime} - {endTime}{" "}
         </div>
@@ -128,7 +144,7 @@ export default function Agenda() {
   }
 
   return (
-    <div className="py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
+    <div className="py-5 lg:py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
       {/* Left */}
       <div className="lg:col-span-4 xl:col-span-3">
         <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-bl-xl p-5 xl:p-10">
@@ -150,12 +166,17 @@ export default function Agenda() {
                 listPlugin,
                 interactionPlugin,
               ]}
-              initialView="dayGridMonth"
+              initialView="timeGridDay"
               selectable={true}
               headerToolbar={{
                 left: "today,prev,next",
                 center: "title",
-                right: "dayGridMonth,timeGridWeek,listWeek",
+                right: "timeGridDay,timeGridWeek,dayGridMonth",
+              }}
+              buttonText={{
+                day: "Dag",
+                month: "Maand",
+                list: "Lijst",
               }}
               height="100%"
               width="100%"

@@ -12,7 +12,7 @@ export default function PieChartPage() {
   const COLORS = ["#6CB791", "#487A60", "#305140"];
 
   return (
-    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 h-full">
+    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl  h-full">
       <div className="flex items-center justify-center h-full">
         <div className="h-[300px] w-full relative">
           <ResponsiveContainer width="100%" height="100%">

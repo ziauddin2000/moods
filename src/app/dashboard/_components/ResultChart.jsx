@@ -12,53 +12,53 @@ import { useState } from "react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 const data = [
-  { name: "jan", price: "510", type: "Week" },
-  { name: "jan", price: "2050", type: "Maand" },
-  { name: "jan", price: "600", type: "Jaar" },
+  { name: "jan", price: "600000", type: "Week" },
+  { name: "jan", price: "100000", type: "Maand" },
+  { name: "jan", price: "200000", type: "Jaar" },
 
-  { name: "feb", price: "1530", type: "Week" },
-  { name: "feb", price: "1650", type: "Maand" },
-  { name: "feb", price: "750", type: "Jaar" },
+  { name: "feb", price: "110000", type: "Week" },
+  { name: "feb", price: "120000", type: "Maand" },
+  { name: "feb", price: "90000", type: "Jaar" },
 
-  { name: "mar", price: "840", type: "Week" },
-  { name: "mar", price: "1250", type: "Maand" },
-  { name: "mar", price: "1200", type: "Jaar" },
+  { name: "mar", price: "95000", type: "Week" },
+  { name: "mar", price: "130000", type: "Maand" },
+  { name: "mar", price: "120000", type: "Jaar" },
 
-  { name: "apr", price: "760", type: "Week" },
-  { name: "apr", price: "1350", type: "Maand" },
-  { name: "apr", price: "800", type: "Jaar" },
+  { name: "apr", price: "90000", type: "Week" },
+  { name: "apr", price: "160000", type: "Maand" },
+  { name: "apr", price: "110000", type: "Jaar" },
 
-  { name: "may", price: "590", type: "Week" },
-  { name: "may", price: "850", type: "Maand" },
-  { name: "may", price: "700", type: "Jaar" },
+  { name: "may", price: "80000", type: "Week" },
+  { name: "may", price: "120000", type: "Maand" },
+  { name: "may", price: "100000", type: "Jaar" },
 
-  { name: "jun", price: "670", type: "Week" },
-  { name: "jun", price: "950", type: "Maand" },
-  { name: "jun", price: "1300", type: "Jaar" },
+  { name: "jun", price: "85000", type: "Week" },
+  { name: "jun", price: "130000", type: "Maand" },
+  { name: "jun", price: "150000", type: "Jaar" },
 
-  { name: "jul", price: "820", type: "Week" },
-  { name: "jul", price: "1150", type: "Maand" },
-  { name: "jul", price: "1600", type: "Jaar" },
+  { name: "jul", price: "100000", type: "Week" },
+  { name: "jul", price: "140000", type: "Maand" },
+  { name: "jul", price: "180000", type: "Jaar" },
 
-  { name: "aug", price: "1240", type: "Week" },
-  { name: "aug", price: "1650", type: "Maand" },
-  { name: "aug", price: "1200", type: "Jaar" },
+  { name: "aug", price: "130000", type: "Week" },
+  { name: "aug", price: "170000", type: "Maand" },
+  { name: "aug", price: "140000", type: "Jaar" },
 
-  { name: "sep", price: "660", type: "Week" },
-  { name: "sep", price: "1550", type: "Maand" },
-  { name: "sep", price: "1900", type: "Jaar" },
+  { name: "sep", price: "90000", type: "Week" },
+  { name: "sep", price: "160000", type: "Maand" },
+  { name: "sep", price: "200000", type: "Jaar" },
 
-  { name: "oct", price: "780", type: "Week" },
-  { name: "oct", price: "2150", type: "Maand" },
-  { name: "oct", price: "1100", type: "Jaar" },
+  { name: "oct", price: "95000", type: "Week" },
+  { name: "oct", price: "220000", type: "Maand" },
+  { name: "oct", price: "130000", type: "Jaar" },
 
-  { name: "nov", price: "920", type: "Week" },
-  { name: "nov", price: "1250", type: "Maand" },
-  { name: "nov", price: "1600", type: "Jaar" },
+  { name: "nov", price: "110000", type: "Week" },
+  { name: "nov", price: "150000", type: "Maand" },
+  { name: "nov", price: "180000", type: "Jaar" },
 
-  { name: "dec", price: "1020", type: "Week" },
-  { name: "dec", price: "1150", type: "Maand" },
-  { name: "dec", price: "800", type: "Jaar" },
+  { name: "dec", price: "120000", type: "Week" },
+  { name: "dec", price: "140000", type: "Maand" },
+  { name: "dec", price: "110000", type: "Jaar" },
 ];
 
 const FILTERS = ["Week", "Maand", "Jaar"];
@@ -70,7 +70,7 @@ export default function ResultChart() {
   const filteredData = data.filter((item) => item.type === selectedType);
 
   return (
-    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 sm:p-8 h-full">
+    <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 sm:py-8 sm:px-4 h-full">
       <h1 className="text-primary-beige text-2xl font-medium mb-4">
         Resultaten
       </h1>
@@ -98,14 +98,28 @@ export default function ResultChart() {
             margin={{
               top: 0,
               right: 0,
-              left: -15,
+              left: -10,
               bottom: 0,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" stroke="#f6ece2" />
-            <YAxis stroke="#f6ece2" />
-            <Tooltip />
+            <YAxis
+              stroke="#f6ece2"
+              tickFormatter={(value) => `${value / 1000}k`}
+            />
+            <Tooltip
+              formatter={(value) => {
+                const number = Number(value);
+                return [
+                  number.toLocaleString("de-DE", {
+                    style: "currency",
+                    currency: "EUR",
+                    minimumFractionDigits: 2,
+                  }),
+                ];
+              }}
+            />
             <Area
               type="monotone"
               dataKey="price"

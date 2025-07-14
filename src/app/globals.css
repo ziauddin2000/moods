@@ -237,6 +237,21 @@ input[type="checkbox"]:checked + span img {
   @apply bg-green1 border-0;
 }
 
+.full-calendar-wrapper .fc-v-event {
+  background-color: #37815b;
+}
+
+.full-calendar-wrapper .fc-timegrid-event-harness-inset .fc-timegrid-event,
+.full-calendar-wrapper .fc-timegrid-event.fc-event-mirror,
+.full-calendar-wrapper .fc-timegrid-more-link {
+  box-shadow: none;
+}
+
+.full-calendar-wrapper .fc-h-event {
+  background-color: transparent;
+  border: none;
+}
+
 /* Dropdown select */
 .agenda-dropdown,
 .event-popup {
