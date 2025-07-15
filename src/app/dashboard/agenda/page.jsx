@@ -270,7 +270,8 @@ export default function Agenda() {
     let dateMatch = true;
     if (selectedDate) {
       const eventDate = new Date(event.start);
-      dateMatch = isSameDay(eventDate, selectedDate);
+      const selected = new Date(selectedDate); // Ensure it's a Date object
+      dateMatch = isSameDay(eventDate, selected);
     }
     return therapistMatch && clientMatch && dateMatch;
   });
