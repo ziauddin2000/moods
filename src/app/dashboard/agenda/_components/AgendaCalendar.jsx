@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Calendar } from "@/components/ui/calendar";
 
-export default function AgendaCalendar() {
-  const [date, setDate] = useState(new Date());
-
+export default function AgendaCalendar({ date, setDate }) {
   // Safe date selection handler
   const handleDateSelect = (selectedDate) => {
     if (selectedDate && selectedDate instanceof Date && !isNaN(selectedDate)) {

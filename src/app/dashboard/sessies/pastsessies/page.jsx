@@ -1,10 +1,19 @@
 "use client";
-import { useState } from "react";
-
+import { useState, useRef, useEffect } from "react";
 import List from "./_components/List";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
+import SideLink from "../_components/SideLink";
+import { Badge } from "@/components/ui/badge";
 
 // --- Dummy Data ---
 const sessionData = [
@@ -214,7 +223,6 @@ const sessionData = [
   },
 ];
 
-// ---  Pagination  ---
 const PAGE_SIZE = 17;
 
 function Pagination({ page, pageCount, onPageChange }) {
@@ -261,32 +269,148 @@ function Pagination({ page, pageCount, onPageChange }) {
 export default function PastSessies() {
   const [page, setPage] = useState(1);
 
-  const paginatedRooms = sessionData.slice(
+  // --- Dropdown Search State ---
+  const [selectedSession, setSelectedSession] = useState(null);
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const inputRef = useRef(null);
+
+  // Get unique session names
+  const uniqueSessions = Array.from(new Set(sessionData.map((s) => s.name)));
+
+  // Filter uniqueSessions by search input
+  const filteredUniqueSessions = uniqueSessions.filter((sessionName) =>
+    sessionName.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Filter sessionData by selected session name
+  const filteredSessions = selectedSession
+    ? sessionData.filter((s) => s.name === selectedSession)
+    : sessionData;
+
+  const paginatedRooms = filteredSessions.slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE
   );
 
+  // Clear filter function
+  const handleClear = () => {
+    setSelectedSession(null);
+    setPage(1);
+    setSearch("");
+  };
+
+  // Focus input when dropdown opens
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => inputRef.current?.focus(), 10);
+    }
+  }, [open, search]);
+
   return (
-    <div className="flex flex-col justify-between h-[84vh]">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4 pb-2 border-b border-secondary-beige">
-        <h1 className="text-xl md:text-2xl text-primary-beige font-medium">
-          Afgelopen sessies
-        </h1>
+    <div className="py-5 lg:py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
+      {/* Left */}
+      <div className="lg:col-span-4 xl:col-span-3">
+        <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-bl-xl p-5 xl:p-10 lg:h-full w-full">
+          {/* Left Menu */}
+          <SideLink />
+          {/* Find a session */}
+          <div className="mt-15 lg:mt-25">
+            <h2 className="font-medium text-lg text-primary-beige mb-4 flex items-center gap-1 justify-between">
+              <span>Vind een kamer</span>
+              <Badge
+                className="cursor-pointer text-xs text-primary-beige"
+                variant="default"
+                onClick={handleClear}
+              >
+                Clear
+              </Badge>
+            </h2>
+
+            {/* Session Dropdown with search */}
+            <Select
+              value={selectedSession || ""}
+              onValueChange={(value) => {
+                setSelectedSession(value);
+                setPage(1);
+                setOpen(false);
+              }}
+              open={open}
+              onOpenChange={(isOpen) => {
+                setOpen(isOpen);
+                if (!isOpen) setSearch("");
+              }}
+            >
+              <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
+                <SelectValue placeholder="Selecteer een kamer" />
+              </SelectTrigger>
+              <SelectContent className="bg-linear-to-r from-green3 to to-green3 border border-secondary-beige max-h-[300px] overflow-y-auto">
+                <div
+                  className="px-2 py-2"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <input
+                    ref={inputRef}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Zoek kamer..."
+                    className="w-full px-2 py-1 rounded border border-primary-beige bg-transparent text-primary-beige"
+                    onFocus={(e) => e.stopPropagation()}
+                    autoFocus
+                  />
+                </div>
+                {filteredUniqueSessions.length > 0 ? (
+                  filteredUniqueSessions.map((sessionName) => (
+                    <SelectItem
+                      key={sessionName}
+                      value={sessionName}
+                      className={`text-primary-beige ${
+                        selectedSession === sessionName
+                          ? "bg-primary-beige text-rich-black"
+                          : ""
+                      }`}
+                    >
+                      {sessionName}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <div className="px-2 py-2 text-primary-beige">
+                    Geen resultaten
+                  </div>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
 
-      {/* List */}
-      <div className="flex-1 rooms-card-wrapper h-[80%] overflow-y-auto">
-        <List paginatedRooms={paginatedRooms}></List>
-      </div>
+      {/* Right */}
+      <div className="lg:col-span-8 xl:col-span-9">
+        <div className="bg-linear-to-bl from-[#5C7E6C] to-[#0C221B] rounded-xl lg:rounded-none lg:rounded-tr-xl lg:rounded-br-xl p-5 lg:h-full w-full">
+          <div className="flex flex-col justify-between h-[84vh]">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4 pb-2 border-b border-secondary-beige">
+              <h1 className="text-xl md:text-2xl text-primary-beige font-medium">
+                Afgelopen sessies
+              </h1>
+            </div>
 
-      {/* Pagination */}
-      <div className="mt-6 flex justify-center">
-        <Pagination
-          page={page}
-          pageCount={Math.ceil(sessionData.length / PAGE_SIZE)}
-          onPageChange={setPage}
-        />
+            {/* List */}
+            <div className="flex-1 rooms-card-wrapper h-[80%] overflow-y-auto">
+              <List paginatedRooms={paginatedRooms} />
+            </div>
+
+            {/* Pagination */}
+            <div className="mt-6 flex justify-center">
+              <Pagination
+                page={page}
+                pageCount={Math.ceil(filteredSessions.length / PAGE_SIZE)}
+                onPageChange={setPage}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -36,14 +36,14 @@ export default function HomeCalendar() {
     <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl p-5 h-full">
       <div className="flex flex-col sm:flex-row justify-center sm:justify-evenly rounded-xl items-center h-full gap-2">
         {/* Left: Current Date */}
-        <div className="flex flex-col items-center justify-center  text-center text-primary-beige">
+        <div className="flex flex-1 flex-col items-center justify-center  text-center text-primary-beige">
           <span className="text-5xl font-medium">{day}</span>
           <span className="text-2xl lowercase">{month}</span>
         </div>
         {/* Divider */}
-        <div className="hidden 2xl:block h-[200px] border-l border-white/30 mx-4" />
+        <div className="hidden sm:block xl:hidden 2xl:block h-[200px] border-l border-white/30 mx-4" />
         {/* Right: Calendar */}
-        <div className="home-calendar max-w-[300px] w-full">
+        <div className="home-calendar max-w-[350px] w-full">
           <Calendar
             mode="single"
             selected={date}

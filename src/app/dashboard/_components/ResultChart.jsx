@@ -112,11 +112,10 @@ export default function ResultChart() {
               formatter={(value) => {
                 const number = Number(value);
                 return [
-                  number.toLocaleString("de-DE", {
-                    style: "currency",
-                    currency: "EUR",
-                    minimumFractionDigits: 2,
-                  }),
+                  "€ " +
+                    number.toLocaleString("de-DE", {
+                      minimumFractionDigits: 2,
+                    }),
                 ];
               }}
             />

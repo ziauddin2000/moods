@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { Calendar } from "@fullcalendar/core";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -26,10 +26,21 @@ import Image from "next/image";
 import CalendarIc from "../../../../public/icons/CalendarIc";
 import ClockIc from "../../../../public/icons/ClockIc";
 
+function isSameDay(dateA, dateB) {
+  return (
+    dateA.getFullYear() === dateB.getFullYear() &&
+    dateA.getMonth() === dateB.getMonth() &&
+    dateA.getDate() === dateB.getDate()
+  );
+}
+
 export default function Agenda() {
+  const calendarRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [successModal, setsuccessModal] = useState(false);
+  const [selectedTherapist, setSelectedTherapist] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
 
   // Add this state for minutes
   const [minutes, setMinutes] = useState(15);
@@ -45,67 +56,164 @@ export default function Agenda() {
 
   // Open popup on date click
   const handleDateClick = (info) => {
-    console.log("Date Clicked: ", info.dateStr);
     setSelectedDate(info.dateStr);
     setSelectedTime(timeSlots[0]);
     setIsPopupOpen(true);
   };
 
-  //  events data
+  // events data
   const dummyEvents = [
     {
       title: "1010 - ZPM Behandeling",
       start: "2025-07-12T08:30:00",
       end: "2025-07-12T10:00:00",
       description: "4e behandelgesprek",
+      therapist: "Noa Zegers",
+      client: "Ava Richardson",
     },
     {
       title: "Conference",
       start: "2025-07-15",
       end: "2025-07-15",
       description: "4e behandelgesprek",
+      therapist: "Daan Hoogstra",
+      client: "Liam Montgomery",
     },
     {
       title: "Long Event",
       start: "2025-07-13",
       end: "2025-07-13",
       description: "4e behandelgesprek",
+      therapist: "Femke Meulendijk",
+      client: "Isabella Harris",
     },
     {
       title: "Long Event",
       start: "2025-07-14T08:30:00",
       end: "2025-07-14T09:30:00",
       description: "Event no - 1",
+      therapist: "Tijn van de Velde",
+      client: "Mason Cruz",
     },
     {
       title: "Long Event",
       start: "2025-07-14T12:30:00",
       end: "2025-07-14T16:30:00",
       description: "Event no - 2",
+      therapist: "Sanne Blom",
+      client: "Ethan Rivers",
     },
     {
       title: "Long Event 2",
       start: "2025-07-13",
       end: "2025-07-13",
       description: "4e behandelgesprek 2",
+      therapist: "Lars Vermeer",
+      client: "Sophia Bennett",
     },
     {
       title: "Meeting",
       start: "2025-08-10T12:30:00",
       end: "2025-08-10T12:30:00",
       description: "4e behandelgesprek",
+      therapist: "Noa Zegers",
+      client: "Aarav Thompson",
     },
     {
       title: "Birthday Party",
       start: "2025-07-16T07:00:00",
       end: "2025-07-7T16:30:00",
       description: "4e behandelgesprek",
+      therapist: "Lars Vermeer",
+      client: "Ava Richardson",
     },
     {
       title: "Repeating Event",
       start: "2025-07-17T16:00:00",
       end: "2025-07-17T12:30:00",
       description: "4e behandelgesprek",
+      therapist: "Sanne Blom",
+      client: "Liam Montgomery",
+    },
+    {
+      title: "Yoga Session",
+      start: "2025-07-15T09:30:00",
+      end: "2025-07-15T10:30:00",
+      description: "Relaxing yoga class",
+      therapist: "Sanne Blom",
+      client: "David Harper",
+    },
+    {
+      title: "Counseling Session",
+      start: "2025-07-15T11:00:00",
+      end: "2025-07-15T12:00:00",
+      description: "Therapy session for anxiety",
+      therapist: "Noa Zegers",
+      client: "Grace Wilson",
+    },
+    {
+      title: "Long Event",
+      start: "2025-07-16T14:00:00",
+      end: "2025-07-16T16:00:00",
+      description: "Personal development session",
+      therapist: "Tijn van de Velde",
+      client: "Oliver Smith",
+    },
+    {
+      title: "Conference Call",
+      start: "2025-07-16T10:30:00",
+      end: "2025-07-16T11:30:00",
+      description: "Therapist consultation",
+      therapist: "Daan Hoogstra",
+      client: "Sophia Lee",
+    },
+    {
+      title: "Therapy Meeting",
+      start: "2025-07-17T13:00:00",
+      end: "2025-07-17T14:00:00",
+      description: "Weekly check-in for progress",
+      therapist: "Femke Meulendijk",
+      client: "Charlotte Evans",
+    },
+    {
+      title: "Relaxation Therapy",
+      start: "2025-07-17T15:30:00",
+      end: "2025-07-17T16:30:00",
+      description: "Deep relaxation techniques",
+      therapist: "Lars Vermeer",
+      client: "Daniel Brown",
+    },
+    {
+      title: "Group Counseling",
+      start: "2025-07-18T09:00:00",
+      end: "2025-07-18T10:30:00",
+      description: "Therapeutic group session",
+      therapist: "Sanne Blom",
+      client: "Emily Adams",
+    },
+    {
+      title: "Private Consultation",
+      start: "2025-07-18T13:00:00",
+      end: "2025-07-18T14:00:00",
+      description: "Private therapy session for grief",
+      therapist: "Lars Vermeer",
+      client: "Jack Thomas",
+    },
+    {
+      title: "Mindfulness Class",
+      start: "2025-07-15T08:30:00",
+      end: "2025-07-15T09:30:00",
+      description: "Guided mindfulness practice",
+      therapist: "Tijn van de Velde",
+      client: "Olivia Johnson",
+    },
+    {
+      title: "Therapy Appointment",
+      start: "2025-07-18T11:00:00",
+      end: "2025-07-18T12:00:00",
+      description: "Therapy session for stress relief",
+      therapist: "Daan Hoogstra",
+      client: "Lucas Garcia",
     },
   ];
 
@@ -143,15 +251,52 @@ export default function Agenda() {
     );
   }
 
+  // Handle Therapist
+  let handleTherapist = (value) => {
+    setSelectedTherapist(value);
+  };
+
+  // Handle Client
+  let handleClient = (value) => {
+    setSelectedClient(value);
+  };
+
+  // Filter by both therapist and client
+  const filteredEvents = dummyEvents.filter((event) => {
+    const therapistMatch = selectedTherapist
+      ? event.therapist === selectedTherapist
+      : true;
+    const clientMatch = selectedClient ? event.client === selectedClient : true;
+    let dateMatch = true;
+    if (selectedDate) {
+      const eventDate = new Date(event.start);
+      dateMatch = isSameDay(eventDate, selectedDate);
+    }
+    return therapistMatch && clientMatch && dateMatch;
+  });
+
   return (
     <div className="py-5 lg:py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
       {/* Left */}
       <div className="lg:col-span-4 xl:col-span-3">
         <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-bl-xl p-5 xl:p-10">
           {/* Agenda Calendar */}
-          <AgendaCalendar />
+          <AgendaCalendar
+            date={selectedDate}
+            setDate={(date) => {
+              setSelectedDate(date);
+              const calendarApi = calendarRef.current?.getApi();
+              if (calendarApi) {
+                calendarApi.changeView("timeGridDay", date);
+              }
+            }}
+          />
           {/* Profile */}
-          <Profile />
+          <Profile
+            data={dummyEvents}
+            handleTherapist={handleTherapist}
+            handleClient={handleClient}
+          />
         </div>
       </div>
 
@@ -160,6 +305,7 @@ export default function Agenda() {
         <div className="bg-linear-to-bl from-[#5C7E6C] to-[#0C221B] rounded-xl lg:rounded-none lg:rounded-tr-xl lg:rounded-br-xl p-5 full-calendar-wrapper h-[500px] lg:h-full w-full overflow-x-auto">
           <div style={{ minWidth: 600, width: "100%", height: "100%" }}>
             <FullCalendar
+              ref={calendarRef}
               plugins={[
                 dayGridPlugin,
                 timeGridPlugin,
@@ -182,7 +328,7 @@ export default function Agenda() {
               width="100%"
               dateClick={handleDateClick}
               select={(info) => console.log(info)}
-              events={dummyEvents}
+              events={filteredEvents}
               eventContent={renderEventContent}
             />
           </div>
@@ -322,7 +468,7 @@ export default function Agenda() {
               </div>
 
               {/* Agenda Calendar */}
-              <AgendaCalendar />
+              <AgendaCalendar date={selectedDate} setDate={setSelectedDate} />
 
               {/* Book Btn */}
               <div className="mt-10">

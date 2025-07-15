@@ -170,6 +170,14 @@ input[type="checkbox"]:checked + span img {
   @apply rounded-full overflow-hidden;
 }
 
+.home-calendar tr {
+  @apply justify-between;
+}
+
+.home-calendar td {
+  @apply flex justify-center items-center h-[35px] w-[35px];
+}
+
 .home-calendar button[data-selected-single="true"] {
   @apply bg-green3 rounded-full;
 }

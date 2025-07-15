@@ -64,7 +64,7 @@ export default function NavBar() {
     {
       label: "kamers",
       icons: "/icons/home-ic.svg",
-      href: "/dashboard/sessies/kamers",
+      href: "/dashboard/sessies",
     },
   ];
 
