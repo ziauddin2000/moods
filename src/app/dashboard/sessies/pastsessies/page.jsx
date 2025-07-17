@@ -14,6 +14,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 import SideLink from "../_components/SideLink";
 import { Badge } from "@/components/ui/badge";
+import { RxCross2 } from "react-icons/rx";
 
 // --- Dummy Data ---
 const sessionData = [
@@ -318,13 +319,6 @@ export default function PastSessies() {
           <div className="mt-15 lg:mt-25">
             <h2 className="font-medium text-lg text-primary-beige mb-4 flex items-center gap-1 justify-between">
               <span>Vind een kamer</span>
-              <Badge
-                className="cursor-pointer text-xs text-primary-beige"
-                variant="default"
-                onClick={handleClear}
-              >
-                Clear
-              </Badge>
             </h2>
 
             {/* Session Dropdown with search */}
@@ -341,9 +335,20 @@ export default function PastSessies() {
                 if (!isOpen) setSearch("");
               }}
             >
-              <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
-                <SelectValue placeholder="Selecteer een kamer" />
-              </SelectTrigger>
+              <div className="relative">
+                <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
+                  <SelectValue placeholder="Selecteer een kamer" />
+                </SelectTrigger>
+
+                {/* clear button */}
+                <button
+                  onClick={handleClear}
+                  className="absolute top-1/2 right-[35px] -translate-y-1/2 text-sm font-medium text-[#f6ece2] opacity-[.5] rounded cursor-pointer"
+                >
+                  <RxCross2 />
+                </button>
+              </div>
+
               <SelectContent className="bg-linear-to-r from-green3 to to-green3 border border-secondary-beige max-h-[300px] overflow-y-auto">
                 <div
                   className="px-2 py-2"

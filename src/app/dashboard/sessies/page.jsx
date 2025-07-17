@@ -326,13 +326,6 @@ export default function Sessies() {
           <div className="mt-15 lg:mt-25">
             <h2 className="font-medium text-lg text-primary-beige mb-4 flex items-center gap-1 justify-between">
               <span>Vind een kamer</span>
-              <Badge
-                className="cursor-pointer text-xs text-primary-beige"
-                variant="default"
-                onClick={handleClear}
-              >
-                Clear
-              </Badge>
             </h2>
 
             {/* Room Dropdown with search */}
@@ -349,12 +342,23 @@ export default function Sessies() {
                 if (!isOpen) setSearch("");
               }}
             >
-              <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
-                <SelectValue placeholder="Selecteer een kamer" />
-              </SelectTrigger>
+              <div className="relative">
+                <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5 relative">
+                  <SelectValue placeholder="Selecteer een kamer" />
+                </SelectTrigger>
+
+                {/* clear button */}
+                <button
+                  onClick={handleClear}
+                  className="absolute top-1/2 right-[35px] -translate-y-1/2 text-sm font-medium text-[#f6ece2] opacity-[.5] rounded cursor-pointer"
+                >
+                  <RxCross2 />
+                </button>
+              </div>
+
               <SelectContent className="bg-linear-to-r from-green3 to to-green3 border border-secondary-beige max-h-[300px] overflow-y-auto relative">
                 <div
-                  className="px-2 py-2"
+                  className="px-2 py-2 "
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -365,7 +369,6 @@ export default function Sessies() {
                     placeholder="Zoek kamer..."
                     className="w-full px-2 py-1 rounded border border-primary-beige bg-transparent text-primary-beige"
                     onFocus={(e) => e.stopPropagation()}
-                    autoFocus
                   />
                 </div>
                 {filteredUniqueRooms.length > 0 ? (
@@ -387,13 +390,6 @@ export default function Sessies() {
                     Geen resultaten
                   </div>
                 )}
-                <div className="h-12" />
-                <button
-                  onClick={handleClear}
-                  className="fixed bottom-[4px] left-[60%] -translate-x-1/2 text-sm font-medium  bg-green1 py-2 px-2 text-primary-beige rounded cursor-pointer"
-                >
-                  <RxCross2 />
-                </button>
               </SelectContent>
             </Select>
           </div>

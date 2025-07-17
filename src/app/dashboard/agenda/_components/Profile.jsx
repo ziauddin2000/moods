@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RxCross2 } from "react-icons/rx";
 
 export default function Profile({ data, handleTherapist, handleClient }) {
   // Unique therapist and client lists
@@ -86,14 +87,16 @@ export default function Profile({ data, handleTherapist, handleClient }) {
     setClientOpen(false);
   };
 
-  // clear selections and searches
-  const handleClear = () => {
-    setSelected(null);
-    setSearch("");
-    setSelectedClient(null);
-    setClientSearch("");
+  const handleClearTherapist = () => {
     handleTherapist(null);
+    setSelected(null);
+  };
+
+  const handleClearClient = () => {
     handleClient(null);
+    setSelectedClient(null);
+    setSearch("");
+    setClientSearch("");
   };
 
   return (
@@ -127,13 +130,6 @@ export default function Profile({ data, handleTherapist, handleClient }) {
       <div className="space-y-4">
         <h2 className="font-medium text-lg text-primary-beige mb-4 flex items-center gap-1 justify-between">
           <span>Vind een agenda</span>
-          <Badge
-            className="cursor-pointer text-xs text-primary-beige"
-            variant="default"
-            onClick={handleClear}
-          >
-            Clear
-          </Badge>
         </h2>
         {/* Therapist select with search */}
         <Select
@@ -142,9 +138,20 @@ export default function Profile({ data, handleTherapist, handleClient }) {
           open={open}
           onOpenChange={handleOpenChange}
         >
-          <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
-            <SelectValue placeholder="Selecteer een therapeut" />
-          </SelectTrigger>
+          <div className="relative">
+            <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
+              <SelectValue placeholder="Selecteer een therapeut" />
+            </SelectTrigger>
+
+            {/* clear button */}
+            <button
+              onClick={handleClearTherapist}
+              className="absolute top-1/2 right-[35px] -translate-y-1/2 text-sm font-medium text-[#f6ece2] opacity-[.5] rounded cursor-pointer"
+            >
+              <RxCross2 />
+            </button>
+          </div>
+
           <SelectContent className="bg-linear-to-r from-green3 to to-green3 border border-secondary-beige max-h-[300px] overflow-y-auto">
             <div
               className="px-2 py-2"
@@ -187,9 +194,20 @@ export default function Profile({ data, handleTherapist, handleClient }) {
           open={clientOpen}
           onOpenChange={handleClientOpenChange}
         >
-          <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
-            <SelectValue placeholder="Selecteer een cliënt" />
-          </SelectTrigger>
+          <div className="relative">
+            <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
+              <SelectValue placeholder="Selecteer een cliënt" />
+            </SelectTrigger>
+
+            {/* clear button */}
+            <button
+              onClick={handleClearClient}
+              className="absolute top-1/2 right-[35px] -translate-y-1/2 text-sm font-medium text-[#f6ece2] opacity-[.5] rounded cursor-pointer"
+            >
+              <RxCross2 />
+            </button>
+          </div>
+
           <SelectContent className="bg-linear-to-r from-green3 to to-green3 border border-secondary-beige max-h-[300px] overflow-y-auto">
             <div
               className="px-2 py-2"
