@@ -18,6 +18,7 @@ import RoomList from "./_components/RoomList";
 
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
+import { RxCross2 } from "react-icons/rx";
 
 // --- Dummy Data ---
 const rooms = [
@@ -351,7 +352,7 @@ export default function Sessies() {
               <SelectTrigger className="agenda-dropdown w-full cursor-pointer rounded-3xl shadow-none border-primary-beige text-base py-5">
                 <SelectValue placeholder="Selecteer een kamer" />
               </SelectTrigger>
-              <SelectContent className="bg-linear-to-r from-green3 to to-green3 border border-secondary-beige max-h-[300px] overflow-y-auto">
+              <SelectContent className="bg-linear-to-r from-green3 to to-green3 border border-secondary-beige max-h-[300px] overflow-y-auto relative">
                 <div
                   className="px-2 py-2"
                   onPointerDown={(e) => e.stopPropagation()}
@@ -386,6 +387,13 @@ export default function Sessies() {
                     Geen resultaten
                   </div>
                 )}
+                <div className="h-12" />
+                <button
+                  onClick={handleClear}
+                  className="fixed bottom-[4px] left-[60%] -translate-x-1/2 text-sm font-medium  bg-green1 py-2 px-2 text-primary-beige rounded cursor-pointer"
+                >
+                  <RxCross2 />
+                </button>
               </SelectContent>
             </Select>
           </div>

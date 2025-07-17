@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Calendar } from "@fullcalendar/core";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -42,11 +42,54 @@ export default function Agenda() {
   const [selectedTherapist, setSelectedTherapist] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
 
-  // Add this state for minutes
+  // Showning Current Date and Day in popup - formatted way in Dutch
+  function formatDutchDate(date) {
+    return date.toLocaleDateString("nl-NL", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+  }
+
+  const [formattedDate, setformattedDate] = useState(new Date());
+
+  // state for minutes
   const [minutes, setMinutes] = useState(15);
 
   // selected time
-  const timeSlots = ["09:30", "10:30", "11:30", "12:30", "13:30", "16:30"];
+  const timeSlots = [
+    { slot: "09:30", booked: false },
+    { slot: "10:00", booked: true },
+    { slot: "10:30", booked: true },
+    { slot: "11:00", booked: true },
+    { slot: "11:30", booked: true },
+    { slot: "12:00", booked: false },
+    { slot: "12:30", booked: true },
+    { slot: "13:00", booked: true },
+    { slot: "13:30", booked: false },
+    { slot: "14:00", booked: true },
+    { slot: "14:30", booked: true },
+    { slot: "15:00", booked: false },
+    { slot: "15:30", booked: true },
+    { slot: "16:00", booked: false },
+    { slot: "16:30", booked: false },
+    { slot: "17:00", booked: true },
+    { slot: "17:30", booked: false },
+    { slot: "18:00", booked: true },
+    { slot: "18:30", booked: true },
+    { slot: "19:00", booked: false },
+    { slot: "19:30", booked: false },
+    { slot: "20:00", booked: true },
+    { slot: "20:30", booked: true },
+    { slot: "21:00", booked: false },
+    { slot: "21:30", booked: false },
+    { slot: "22:00", booked: true },
+    { slot: "22:30", booked: true },
+    { slot: "23:00", booked: false },
+    { slot: "23:30", booked: true },
+    { slot: "24:00", booked: false },
+  ];
+
   const [selectedTime, setSelectedTime] = useState(timeSlots[0]);
 
   // Functions to handle increment/decrement
@@ -59,6 +102,9 @@ export default function Agenda() {
     setSelectedDate(info.dateStr);
     setSelectedTime(timeSlots[0]);
     setIsPopupOpen(true);
+
+    const date = new Date(info.dateStr);
+    setformattedDate(formatDutchDate(date));
   };
 
   // events data
@@ -270,11 +316,23 @@ export default function Agenda() {
     let dateMatch = true;
     if (selectedDate) {
       const eventDate = new Date(event.start);
-      const selected = new Date(selectedDate); // Ensure it's a Date object
+      const selected = new Date(selectedDate);
       dateMatch = isSameDay(eventDate, selected);
     }
     return therapistMatch && clientMatch && dateMatch;
   });
+
+  // Popup calendar date
+  function onDateChange(date) {
+    setSelectedDate(date);
+    setformattedDate(formatDutchDate(new Date(date)));
+
+    // Go to the selected date in FullCalendar
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.gotoDate(date);
+    }
+  }
 
   return (
     <div className="py-5 lg:py-10 grid grid-cols-1 gap-y-3 lg:gap-0 lg:grid-cols-12 ">
@@ -282,16 +340,7 @@ export default function Agenda() {
       <div className="lg:col-span-4 xl:col-span-3">
         <div className="bg-linear-to-bl from-[#0C221B] to-[#5C7E6C] rounded-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-bl-xl p-5 xl:p-10">
           {/* Agenda Calendar */}
-          <AgendaCalendar
-            date={selectedDate}
-            setDate={(date) => {
-              setSelectedDate(date);
-              const calendarApi = calendarRef.current?.getApi();
-              if (calendarApi) {
-                calendarApi.changeView("timeGridDay", date);
-              }
-            }}
-          />
+          <AgendaCalendar date={selectedDate} setDate={onDateChange} />
           {/* Profile */}
           <Profile
             data={dummyEvents}
@@ -328,7 +377,6 @@ export default function Agenda() {
               height="100%"
               width="100%"
               dateClick={handleDateClick}
-              select={(info) => console.log(info)}
               events={filteredEvents}
               eventContent={renderEventContent}
             />
@@ -469,7 +517,7 @@ export default function Agenda() {
               </div>
 
               {/* Agenda Calendar */}
-              <AgendaCalendar date={selectedDate} setDate={setSelectedDate} />
+              <AgendaCalendar date={selectedDate} setDate={onDateChange} />
 
               {/* Book Btn */}
               <div className="mt-10">
@@ -487,7 +535,7 @@ export default function Agenda() {
                     Boek nu
                   </button>
                   <span className="text-primary-beige text-base xl:text-lg font-normal bg-transparent px-5 whitespace-nowrap">
-                    Maandag 23 juni
+                    {formattedDate}
                   </span>
                 </div>
               </div>
@@ -498,18 +546,18 @@ export default function Agenda() {
                 Selecteer een tijd
               </div>
               <div className="text-primary-beige text-base font-normal text-center mb-4">
-                Donderdag 14 juli
+                {formattedDate}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-col gap-3 w-full schedule-wrap max-h-[300px] overflow-auto ">
-                {timeSlots.map((t) => (
+                {timeSlots.map((t, idx) => (
                   <button
-                    key={t}
+                    key={idx}
                     className={`cursor-pointer bg-green1 text-primary-beige rounded-full py-2 font-medium hover:bg-green5 transition
-                      ${selectedTime === t ? "bg-green5" : ""}
+                      ${selectedTime === t.slot ? "bg-green5" : ""}
                     `}
-                    onClick={() => setSelectedTime(t)}
+                    onClick={() => setSelectedTime(t.slot)}
                   >
-                    {t}
+                    {t.slot}
                   </button>
                 ))}
               </div>
@@ -548,7 +596,7 @@ export default function Agenda() {
           >
             {/* Close Button */}
             <button
-              className="absolute top-4 right-4 text-primary-beige text-2xl"
+              className="cursor-pointer absolute top-4 right-4 text-primary-beige text-2xl"
               onClick={() => setsuccessModal(false)}
             >
               <RxCross1 />
